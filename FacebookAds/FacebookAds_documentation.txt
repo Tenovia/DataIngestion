@@ -1,0 +1,84 @@
+						FACEBOOK ADS DATA INGESTION TO ETL:
+
+Data ingestion:
+Using Lambda function “FacebookAds_to_S3” we push a 7-day attribution window (7 files) of 5 different reports into S3.
+The reports are :
+1. Campaign insights: Pulls all the data parameters available of campaign data.
+2. Country region: Breakdown campaign insights by country and region
+3. Age gender: Breakdown campaign insights by age and gender
+4. Device: Breakdown by device used report
+5. Publisher and platform : Breakdown of campaign insights by publisher and platform basis.
+
+NOTE:Page insights are also being pulled by the page_insights.py function which needs to be formatted and inserted into S3.
+	Data dictionary link:
+	https://developers.facebook.com/docs/graphapi/reference/v6.0/insights#page-story-types
+
+
+The Lambda functions are: 
+1. campaign_insights.py
+2. country_region.py
+3. age_gender.py
+4. device.py
+5. publisher_platform.py
+6. all_reports.py: Calls all the 5 python functions for the reports. Usage is advised against due to throttling of Facebook API calls.
+7. importtos3.py: Converts the list of dictionaries of the report to csv format and pushes it into S3.
+
+The output path for the S3 bucket for each report is:
+1) Campaign_insights: 
+i."s3://paragon-datalake/FacebookAds/landing_campaign_insights/"
+ii. "s3://paragon-datalake/FacebookAds/processing_campaign_insights/csv/"
+2) Country_region: 
+i."s3://paragon-datalake/FacebookAds/landing_country_region/"
+ii. "s3://paragon-datalake/FacebookAds/processing_country_region/csv/"
+3) Age_gender: 
+i."s3://paragon-datalake/FacebookAds/landing_age_gender/"
+ii. "s3://paragon-datalake/FacebookAds/processing_age_gender/csv/"
+4) Device: 
+i."s3://paragon-datalake/FacebookAds/landing_device/"
+ii. "s3://paragon-datalake/FacebookAds/processing_device/csv/"
+5) Publisher_platform: 
+i."s3://paragon-datalake/FacebookAds/landing_publisher_platform/"
+ii. "s3://paragon-datalake/FacebookAds/processing_publisher_platform/csv/"
+
+
+Data processing:
+
+We run AWS Glue Jobs on the csv data files and convert them to parquet on inferring schema. Then run the crawler on the parquet or the csv folder to get the data in tabukar format. This can be run on ATHENA and queried accordingly.
+Warning: HIVE MISMATCH ERROR OCCURS ON RUNNING ATHENA ON PARQUET FOLDER. THEREFORE TO ACCESS THE DATA RUN THE CRAWLERS ON THE CSV FILE ITSELF.
+
+The crawlers for different reports are:
+1. FbAds_campaign_insights_crawler
+2. FbAds_country_region_crawler
+3. FbAds_age_gender_crawler
+4. FbAds_device_crawler
+5. FbAds_publisher_platform_crawler
+
+The Glue Jobs for different reports are:
+1. FbAds_campaign_insights_job
+2. FbAds_country_region_job
+3. FbAds_age_gender_job
+4. FbAds_device_job
+5. FbAds_publisher_platform_job
+
+NOTE: THE JOBS NEED TO BE SCHEDULEDTO RUN ON THE SAME DAY AS LAMBDA FUNCTIONS.
+
+
+The output path for the S3 bucket for each processed report in parquet is:
+1. Campaign_insights: 
+ii. "s3://paragon-datalake/FacebookAds/processing_campaign_insights/parquet/"
+2. Country_region: 
+ii. "s3://paragon-datalake/FacebookAds/processing_country_region/parquet/"
+3. Age_gender: 
+ii. "s3://paragon-datalake/FacebookAds/processing_age_gender/parquet/"
+4. Device: 
+ii. "s3://paragon-datalake/FacebookAds/processing_device/parquet/"
+5. Publisher_platform: 
+ii. "s3://paragon-datalake/FacebookAds/processing_publisher_platform/parquet/"
+
+
+NOTE: THE ACCESS TOKEN EXPIRES AFTER TWO MONTHS. YOU CAN EASY GENERATE A NEW TOKEN FROM THE FACEBOOK DEVELOPERS PAGE .
+LINK: https://developers.facebook.com/apps/417313085526905/marketing-api/tools/?business_id=948216441864675
+
+
+NOTE: INCASE THE JOB RUN FAILS, THE CSV FILE OF THE SAME WEEK WILL BE SECURELY STORED INTO THE PROCESSING_REPORT_NAME/CSV FOLDER.
+

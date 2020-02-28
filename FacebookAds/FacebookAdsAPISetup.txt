@@ -1,0 +1,42 @@
+
+This documentation covers the section for how different reports are
+generated for FacebookAds.
+
+1. From developers facebook account, create a new app.
+   Get the app-id, the app-secret and generate an access token.
+   NOTE: THE ACCESS TOKEN WILL EXPIRE IN TWO MONTHS. GENERATE A NEW ONE FROM THE DEVELOPER LINK.
+   LINK: https://developers.facebook.com/apps/417313085526905/marketing-api/tools/?business_id=948216441864675
+   Saved these credentials in "tokenfb"
+
+2.Download and install facebook-python-business-sdk
+    pip3 install facebook_business
+
+3.Create a text file "account_id" to store the id of the account to be externally accessed.
+  For eg., for Paragon Facebook Ads we shall insert "act_165864193983217" into the "account_id" file.
+
+4.In the python program,we use the account id to get all the campaign id's associated with that account.
+  Set up my_account variable for a particular account and get all the campaign ids for the same.
+    campaignids = my_account.get_campaigns()
+
+5.Mentioned parameters for CAMPAIGN INSIGHTS reports.
+  Fields assumed are all included by the API to be pushed into the data lake.
+  Details about the fields can be found in the link attached below:
+    https://developers.facebook.com/docs/marketing-api/insights/parameters/v5.0
+
+6.Mentioned parameters for PAGE INSIGHTS reports.
+  Fields assumed are all included by the API to be pushed into the data lake.
+  Details about the fields can be found in the link attached below:
+    https://developers.facebook.com/docs/graph-api/reference/v6.0/insights#page-story-types
+
+  
+7.Run it in a loop and extract campaign insights with the python lambda functions.
+
+
+8.Process of creating the lambda function:
+    Create a lambda function "FacebookAds_to_s3" using AWS Lambda services.
+    Perform "sudo pip3 install --target ./packfb facebook_business" to install the contents of the module into a particular folder "packfb"
+    Or just copy the contents of your already installed package into the folder you desire.
+    Create a zip file of the contents of "packfb" and upload it to your lambda function.
+    Create python functions for your code and a text file for "account_id" and another python file for "importtos3.py"
+    Make sure the buckets and the path have already been created in S3.
+    Push the data into folders in the S3 bucket using the lambda function.
