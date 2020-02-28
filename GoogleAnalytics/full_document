@@ -1,6 +1,8 @@
 Platform: Google Analytics
 Data Ingestion: 
-
+"""
+Github Link:https://github.com/Tenovia/DataIngestion/tree/master/GoogleAnalytics
+"""
 
 
 The programs are contained in "lambda_files" folder which is fetching the data from the GAnalytics platform using Reporting v4 API and landing it into paragon-datalake bucket.
