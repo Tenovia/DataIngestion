@@ -1,0 +1,92 @@
+Platform: Amazon Seller Central
+Data Ingestion: 
+
+
+
+The programs are contained in "lambda_files" folder which is fetching the data from the AWS SellerCentral platform using MWS API and landing it into paragon-datalake bucket.
+
+For Scheduling the data Ingestion part we are using "AWS Lambda".
+Function Name in  Lambda: AmazonSellerCentral_to_s3
+
+
+lambda_handler name is :
+	mws_order.py
+	mws_return.py
+	mws_inventory.py
+	mws_performance.py
+	mws_settlements.py
+	fba.py
+
+
+
+Path of the reports(output from  stored in s3: 
+	s3://paragon-datalake/amazonsellercentral/landing/#Report_name
+
+Reports Description:
+	To get the report description, click on the link below.
+	https://docs.developer.amazonservices.com/en_US/reports/Reports_ReportType.html
+
+
+
+
+
+
+Data Processing:
+
+	
+
+The programs are contained in "ETL_SCRIPTS" folder.
+To execute these files we are using AWS GLUE jobs which will take the landing reports from the AWS S3 and put it into S3 again in the processed and Transformed format with .parquet extension.
+
+
+Jobs Name are:
+	MWS_Inventory_job(One job only to access all reports, edit the job and run again)
+
+These are stored in s3://paragon-datalake/amazonsellercentral/ETL_SCRIPT/#ReportName
+
+The output of these reports will be stored in:
+	s3://paragon-datalake/amazonsellercentral/processing/#Report_name
+	
+
+We can access these processed reports using AWS GLUE Crawlers:
+The crawler names are:
+	MWS_landing_inventory_crawler
+	MWS_processing_inventory_crawler
+	
+
+The output of these crawlers will be saved in Database named:
+	amazonsellercentral-db
+
+The tables under this Database can be accessed or viwed using Athena, just by clicking View data icon in AWS GLUE tables.
+
+	
+
+Workflow:
+
+
+
+			           Reporting API v4(AWS Lambda)               AWS GLUE JOB(ETL)                       AWS GLUE CRAWLER                                    VIEW
+Amazon Seller Central Platform-------------------------------->AWS S3----------------------------->AWS S3---------------------------------->AWS GLUE Table----------------------------------->AWS ATHENA
+
+(Reports)                      	      mws.py                                   ETL_Scripts                    CRAWLER NAME as Mentioned Above                    View the Tables using database 
+				    (reportname.py) 	               													amazonsellercentral-db
+
+
+
+PLATFORM	GOOGLE ANALYTICS	(Done By Akhil)		
+				
+Source	Staging(Landing)	Processing	Database(Name)	Table Name
+order	s3://paragon-datalake/amazonsellercentral/landing/order	s3://paragon-datalake/amazonsellercentral/processing/order	Amazonsellercentral-db	ga_order
+returns	s3://paragon-datalake/amazonsellercentral/landing/return	s3://paragon-datalake/amazonsellercentral/processing/return	Amazonsellercentral-db	ga_returns
+Settlements	s3://paragon-datalake/amazonsellercentral/landing/settlements	s3://paragon-datalake/amazonsellercentral/processing/settlements	Amazonsellercentral-db	ga_settlements
+PerformanceReport	s3://paragon-datalake/amazonsellercentral/landing/performance	s3://paragon-datalake/amazonsellercentral/processing/performance	Amazonsellercentral-db	ga_performancereport
+inventory	s3://paragon-datalake/amazonsellercentral/landing/inventory	s3://paragon-datalake/amazonsellercentral/processing/inventory	Amazonsellercentral-db	ga_inventory
+fulfilledbyamazon	s3://paragon-datalake/amazonsellercentral/landing/fba	s3://paragon-datalake/amazonsellercentral/processing/fba	Amazonsellercentral-db	ga_fba
+
+
+Hope you'll find this document helpful
+
+Thanks And Regards
+Akhil
+	
+		
