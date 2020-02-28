@@ -43,7 +43,7 @@ ii. "s3://paragon-datalake/FacebookAds/processing_publisher_platform/csv/"
 
 Data processing:
 
-We run AWS Glue Jobs on the csv data files and convert them to parquet on inferring schema. Then run the crawler on the parquet or the csv folder to get the data in tabukar format. This can be run on ATHENA and queried accordingly.
+We run AWS Glue Jobs on the csv data files and convert them to parquet on inferring schema. Then run the crawler on the parquet or the csv folder to get the data in tabular format. This can be run on ATHENA and queried accordingly.
 Warning: HIVE MISMATCH ERROR OCCURS ON RUNNING ATHENA ON PARQUET FOLDER. THEREFORE TO ACCESS THE DATA RUN THE CRAWLERS ON THE CSV FILE ITSELF.
 
 The crawlers for different reports are:
@@ -67,7 +67,7 @@ The tables created for different reports are:
 4. processing_device_csv
 5. processing_publisher_platform_csv
 
-NOTE: THE JOBS NEED TO BE SCHEDULEDTO RUN ON THE SAME DAY AS LAMBDA FUNCTIONS.
+NOTE: THE JOBS NEED TO BE SCHEDULED TO RUN ON THE SAME DAY AS LAMBDA FUNCTIONS.
 
 
 The output path for the S3 bucket for each processed report in parquet is:
