@@ -1,0 +1,52 @@
+This program is used to Fetch the reports for basic filters present inside the Google Analytics, using Reporting API v4.
+
+Instructions:
+Step1:To fetch the reports, we firstly have to get the "HelloAnalytics.py" code from the google documentation. 
+
+Step2:After getting the "HelloAnalytics.py" code, we need maintain "client_secrets.json" used in the python file, whose template can also be accessed using Analytics documentation.
+
+Step3:Client_secrets.json contains type of service, project_id, private_key_id and private key.
+
+Step4:These all required parameters can be accessed once you signup with a new account with client_email.
+
+Step5:After Signin, Analytics console will provide one client_id, auth_uri, token_uri, auth_provider_x509_cert_url and client_x509_cert_url.
+
+Step6:After clients_secrets.json required fields are completed press ctrl+s and close this file.
+
+Step7:Now, to run HelloAnalytics.py program, we need to have some basic dependencies fulfilled.
+	(i)  Python 2
+	(ii) googleapiclient or apiclient package, which can be downloaded using pip.
+	(iii)oauth2client python package(also accessible through pip).
+	(iv) View_id of the project, whose reports you want to access.(ex:Paragon's View_id is:770*47*54)
+	(v)  Client_secrets.json
+
+Step8:In this step, we have to edit the "get_report()" function where we add different parameters as per our requirements.
+	(i)  First, we need to specify date ranges in "dateRanges:" key, value pair.
+	(ii) Then, in the next step, we need to add different metrics needed for accessing the detailed report.
+		To get the detailed information about metrics and filters, please visit the link below.
+			https://ga-dev-tools.appspot.com/dimensions-metrics-explorer/
+	(iii)After specifying the metrics, we need to give the dimensions to the report, which can be considered as primary key of the report.
+	(iv) In our case, we are accessing three basic reports in Analytics, which are report on the basis of country, city and language.
+Step9:After doing all the steps, click ctrl+s and close the file.
+
+Step10:type the python "HelloAnalytics.py" in terminal and that's it, report is here in front of you.
+
+
+Reports:
+Now, the question arises, what are these reports.
+
+So, in the beginning, we do not have clear set of requirements, hence we are accessing only the basic reports, which can provide the maximum amount of data.
+Given that, anyone noob in python language can also access the reports in the Analytics, by reading the Documentation written as above.
+All you need to do is, change the metrics as per your requirements, specify the filter(dimension) of the report and we are all set to proceed.
+
+CountryReports: In this report, you'll get the website data, divided on the basis of countries, where " number_of_users, users_sessions, bounce rate, revenue and many other important parameters are being fetched".
+CityReports: City is included in the countryreport as a second dimension to exemplify, how multiple dimensions can be added to the report.
+LanguageReport: Report, again based on Demographics, metrics just the same as countryreport, but on the basis of language.
+
+
+All I need to Infer here is, you can change the dimensions, metrics, project(project_id) just by making few changes to the already running code.
+
+All the best!!!
+
+Thanks And Regards
+Akhil

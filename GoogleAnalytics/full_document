@@ -1,0 +1,87 @@
+Platform: Google Analytics
+Data Ingestion: 
+
+
+
+The programs are contained in "lambda_files" folder which is fetching the data from the GAnalytics platform using Reporting v4 API and landing it into paragon-datalake bucket.
+
+For Scheduling the data Ingestion part we are using "AWS Lambda".
+Function Name in  Lambda: GAnalyticstos3
+lambda_handler name is :
+	cityreport.py
+	countryreport.py
+	languagereport.py
+	product_details_page.py
+
+
+
+Path of the reports(output from  stored in s3: 
+	s3://paragon-datalake/googleanalytics/landing/#Report_name
+
+Reports Description:
+	CountryReports: In this report, you'll get the website data, divided on the basis of countries, where " number_of_users, users_sessions, bounce rate, revenue and many other important parameters are being fetched".
+	
+	CityReports: City is included in the countryreport as a second dimension to exemplify, how multiple dimensions can be added to the report.
+	
+	LanguageReport: Report, again based on Demographics, metrics just the same as countryreport, but on the basis of language.
+	
+	Product_details_page: This report will contain the details of products on the basis of their class, SKU, date and the metrics will be the number of impressions, CTD, CTR etc.
+
+
+
+
+
+
+Data Processing:
+
+	
+
+The programs are contained in "ETL_SCRIPTS" folder.
+To execute these files we are using AWS GLUE jobs which will take the landing reports from the AWS S3 and put it into S3 again in the processed and Transformed format with .parquet extension.
+
+
+Jobs Name are:
+	GA_Cityreport_job
+	GA_Countryreport_job
+	GA_Languagereport_job
+	GA_ProductDetails_job
+These are stored in s3://paragon-datalake/googleanalytics/ETL_SCRIPT/#ReportName
+
+The output of these reports will be stored in:
+	s3://paragon-datalake/googleanalytics/processing/#Report_name
+	
+
+We can access these processed reports using AWS GLUE Crawlers:
+The crawler names are:
+	GA_CityReport_Crawler
+	GA_CountryReport_Crawler
+	GA_LanguageReport_Crawler
+	GA_LanguageReport_Crawler
+
+The output of these crawlers will be saved in Database named:
+	googleanalytics-db
+
+The tables under this Database can be accessed or viwed using Athena, just by clicking View data icon in AWS GLUE tables.
+
+
+
+Workflow:
+
+
+
+			    Reporting API v4(AWS Lambda)               AWS GLUE JOB(ETL)                       AWS GLUE CRAWLER                                    VIEW
+Google Analytics Platform-------------------------------->AWS S3----------------------------->AWS S3---------------------------------->AWS GLUE Table----------------------------------->AWS ATHENA
+
+(Reports)                      HelloAnalytics.py                         ETL_Scripts                  CRAWLER NAME as Mentioned Above                    View the Tables using database 
+				(reportname.py) 														googleanalytics-db
+
+
+
+
+
+Hope you'll find this document helpful
+
+Thanks And Regards
+Akhil
+	
+		
