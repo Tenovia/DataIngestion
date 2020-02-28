@@ -1,0 +1,78 @@
+GoogleAdWords Documentation
+(Done by Mihir)
+
+Data ingestion and S3 path :
+
+Lambda function for GAds is currently throwing an error (lxml etree error). We can run scripts to generate different reports from the local machine and the generated “csv” reports are ingested to S3 paragon-datalake. 
+The different reports generated are stored in the landing folder under GoogleAds. Landing folder is further divided into folders with names corresponding the kinds of the report (example – age_report). Each of these folders has the reports generated saved with the date as the name. Every time the script runs, reports for the previous 8 days are generated. If we run the script for age report on 28th we will get the reports from 20th to 27th . When you run the same script on 29th, reports with names 21st to 27th will get overwritten and another file with name 28th will be created (the overwriting is necessary as we have a 7 day attribution window).  
+The scripts to generate different Gads reports must be run on an everyday basis. These scripts should run prior to any other jobs. Lambda once setup, can be configured to run these scripts on an everyday basis.
+
+S3 path where the reports will be stored :
+s3://paragon-datalake/ GoogleAds/landing/age_report/"+"age_report_"+full_date+".csv"
+s3://paragon-datalake/ GoogleAds/landing/budget_report/"+"budget_report_"+full_date+".csv"
+s3://paragon-datalake/ GoogleAds/landing/campaign_report/"+"campaign_report_"+full_date+".csv"
+s3://paragon-datalake/ GoogleAds/landing/criteria_report/"+"criteria_report_"+full_date+".csv"
+s3://paragon-datalake/ GoogleAds/landing/gender_report/"+"gender_report_"+full_date+".csv"
+s3://paragon-datalake/ GoogleAds/landing/geo_report/"+"geo_report_"+full_date+".csv"
+s3://paragon-datalake/ GoogleAds/landing/keyword_report/"+"keyword_report_"+full_date+".csv"
+s3://paragon-datalake/ GoogleAds/landing/landing_page_report/"+"landing_page_report_"+full_date+".csv"
+
+
+Report description :
+The description for each of the report is provided within the script of the corresponding report at the start before the code.
+
+
+Data processing :
+
+For each of the reports generated we use a different ETL scripts. These ETL scripts are stored in GoogleAds -> ETL_scripts. Different reports require different kinds of ETL operations to be performed
+There is a separate Glue job which does the ETL processing for each kind of report. For example there is a job gads_campaign_job which takes the ETL script (ETL_campaign.py) stored in S3 and does the ETL processing for campaign reports. The ETL operations are performed on the “csv” files and finally the processed reports are stored as parquet files in processing folder as reportname_parquet.
+
+Output path for jobs :
+s3://paragon-datalake/GoogleAds/processing/campaign_ parquet/campaign_report_"+full_date
+s3://paragon-datalake/GoogleAds/processing/age_ parquet/age_report_"+full_date
+s3://paragon-datalake/GoogleAds/processing/budget_ parquet/budget_report_"+full_date
+s3://paragon-datalake/GoogleAds/processing/criteria_ parquet/criteria_report_"+full_date
+s3://paragon-datalake/GoogleAds/processing/gender_ parquet/gender_report_"+full_date
+s3://paragon-datalake/GoogleAds/processing/keyword_ parquet/keyword_report_"+full_date
+s3://paragon-datalake/GoogleAds/processing/landing_page_ parquet/landing_page_report_"+full_date
+
+Glue jobs are :
+	gads_age_job
+	gads_budget_job
+	gads_campaign_job
+	gads_criteria_job
+	gads_gender_job
+	gads_geo_job
+	gads_keyword_job
+	gads_landing_page_job
+These glue jobs have to run on the same day and after the data ingestion to S3 is performed 
+
+Crawlers :
+There is one crawler for each kind of report. The crawler names are – 
+	Gads_age_crawler
+	Gads_campaign_crawler
+	Gads_budget_crawler
+	Gads_criteria_crawler
+	Gads_gender_crawler
+	Gads_geo_crawler
+	Gads_keyword_crawler
+	Gads_landing_pg_crawler
+Each of these crawlers are used to create the tables for different parquet files so that they can be accessed using Athena. All the tables created are stored in the database name – “googleadsdb”.
+
+The tables names are :
+	age_parquet
+	budget_parquet
+	campaign_parquet
+	criteria_parquet
+	gender_parquet
+	geo_parquet
+	keyword_parquet
+	landing_page_parquet
+
+
+Workflow : 
+
+                	     AdWords API			AWS Glue job(ETL)		  	AWS Glue Crawler				   	 Value
+Google AdWords platform -----------------------> AWS S3 -----------------------------> AWS S3 --------------------------------------> AWS Glue table --------------------------------> AWS Athena
+			   reportname_perf.py			  ETL Scripts			    Crawler name as mentioned				View tables using database
+			     (age_perf.py)
