@@ -4,6 +4,9 @@ https://github.com/Tenovia/DataIngestion/tree/master/GoogleAnalytics
 
 This program is used to Fetch the reports for basic filters present inside the Google Analytics, using Reporting API v4.
 
+Click on the link for getting the documentation for how to register On Reporting API v4 to get the reports from Analytics
+https://developers.google.com/analytics/devguides/reporting/core/v4/quickstart/service-py
+
 Instructions:
 Step1:To fetch the reports, we firstly have to get the "HelloAnalytics.py" code from the google documentation. 
 
