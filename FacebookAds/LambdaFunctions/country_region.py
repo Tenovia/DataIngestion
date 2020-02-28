@@ -9,9 +9,9 @@ import datetime
 
 
 import importtos3
-app_id = '417313085526905'
-app_secret = 'cac5607ffca31ffadb3633063121b2d1'
-access_token = 'EAAF7i0Y5E3kBADG71vJ0N6FQPOyC947lGLfQoKZCMkXkE18ZAEjPRfbJRGfWxaCgt9F93uvS3sDrPFR59LO0gtIdiCzsXLUvxeBm6f0XXdiESakgZBBRWWaWpltTHIDmXG4dxyv7lvZBfj2rXlSdr9RYcplmFwVz1WwVQZCLnqjTFGnZCMTd6MVZBTl7ZAynljIZD'
+app_id = '<app_id>'
+app_secret = '<app_secret>'
+access_token = '<access_token>'
 FacebookAdsApi.init(app_id, app_secret, access_token)
 def country_region():
     today=datetime.date.today()
