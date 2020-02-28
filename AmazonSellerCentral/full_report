@@ -1,6 +1,11 @@
 Platform: Amazon Seller Central
 Data Ingestion: 
+To start with MWS for accessing the reports from seller central, please click on the link below.
+http://docs.developer.amazonservices.com/en_US/dev_guide/index.html
 
+
+To register with MWS, please refer to the documentation which I have used as reference.
+http://docs.developer.amazonservices.com/en_US/dev_guide/DG_Registering.html#DG_Registering
 
 
 The programs are contained in "lambda_files" folder which is fetching the data from the AWS SellerCentral platform using MWS API and landing it into paragon-datalake bucket.
