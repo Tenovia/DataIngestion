@@ -78,6 +78,13 @@ Google Analytics Platform-------------------------------->AWS S3----------------
 				(reportname.py) 														googleanalytics-db
 
 
+PLATFORM	GOOGLE ANALYTICS	(Done By Akhil)		
+				
+Source	Staging(Landing)	Processing	Database(Name)	Table Name
+CountryReport	s3://paragon-datalake/googleanalytics/landing/countryreport	s3://paragon-datalake/googleanalytics/processing/countryreport	Googleanalytics-db	ga_countryreport
+CityReport	s3://paragon-datalake/googleanalytics/landing/cityreport	s3://paragon-datalake/googleanalytics/processing/cityreport	Googleanalytics-db	ga_cityreport
+LanguageReport	s3://paragon-datalake/googleanalytics/landinglanguagereport	s3://paragon-datalake/googleanalytics/processing/languagereport	Googleanalytics-db	ga_languagereport
+Product_Details_Report	s3://paragon-datalake/googleanalytics/landing/product_details	s3://paragon-datalake/googleanalytics/processing/product_details	Googleanalytics-db	ga_product_details
 
 
 
