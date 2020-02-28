@@ -10,9 +10,9 @@ import boto3
 import datetime
 import csv
 import importtos3check
-app_id = '417313085526905'
-app_secret = 'cac5607ffca31ffadb3633063121b2d1'
-access_token ='EAAF7i0Y5E3kBAKfoZBK1yKPxsHei2sIS15veSVCVRCuMmrnJn3G2iqkLZAikZAZC6lJZBATFloaKt1bqwD6ZCjJJW119DMb7Km3N5IZB66TEFUNxpgENLiW2U3Qrkd2cSihB68BZChzlmSBEfsAZCEYAmBHU7m1xDZAZBaIUcy5nPWqbp33M3v7eaK4ZC7PnPiZCzc50ZD'
+app_id = '<app_id>'
+app_secret = '<app_secret>'
+access_token ='<access_token>'
 FacebookAdsApi.init(app_id, app_secret, access_token)
 fields = {
     "data": [],
