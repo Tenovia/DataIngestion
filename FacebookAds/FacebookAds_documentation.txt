@@ -60,6 +60,13 @@ The Glue Jobs for different reports are:
 4. FbAds_device_job
 5. FbAds_publisher_platform_job
 
+The tables created for different reports are:
+1. processing_campaign_insights_csv
+2. processing_country_region_csv
+3. processing_age_gender_csv
+4. processing_device_csv
+5. processing_publisher_platform_csv
+
 NOTE: THE JOBS NEED TO BE SCHEDULEDTO RUN ON THE SAME DAY AS LAMBDA FUNCTIONS.
 
 
